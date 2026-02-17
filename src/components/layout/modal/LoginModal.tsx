@@ -83,58 +83,72 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
           Welcome back! Sign in to continue
         </p>
 
-        <label htmlFor="email" style={{ alignSelf: "flex-start", marginBottom: "0.25rem" }}>Email</label>
-        <input
-          type="text"
-          id="email"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          placeholder="Enter your email or contact"
-          style={{
-            width: "100%",
-            marginBottom: "0.75rem",
-            padding: "0.5rem",
-            borderRadius: "0.5rem",
-            border: "1px solid #d1d5db",
-            outline: "none",
+        {/* START FORM */}
+        <form
+          style={{ width: "100%", display: "flex", flexDirection: "column" }}
+          onSubmit={(e) => {
+            e.preventDefault(); // prevent page reload
+            handleLogin();
           }}
-        />
-
-        <label htmlFor="password" style={{ alignSelf: "flex-start", marginBottom: "0.25rem" }}>Password</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
-          style={{
-            width: "100%",
-            marginBottom: "1rem",
-            padding: "0.5rem",
-            borderRadius: "0.5rem",
-            border: "1px solid #d1d5db",
-            outline: "none",
-          }}
-        />
-
-        {error && <p style={{ color: "red", marginBottom: "0.5rem" }}>{error}</p>}
-
-        <button
-          style={{
-            width: "100%",
-            backgroundColor: "#3b82f6",
-            color: "white",
-            padding: "0.5rem",
-            borderRadius: "0.5rem",
-            cursor: "pointer",
-            transition: "background-color 0.2s",
-          }}
-          onClick={handleLogin}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#3b82f6")}
         >
-          Login
-        </button>
+          <label htmlFor="email" style={{ alignSelf: "flex-start", marginBottom: "0.25rem" }}>
+            Email
+          </label>
+          <input
+            type="text"
+            id="email"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            placeholder="Enter your email or contact"
+            style={{
+              width: "100%",
+              marginBottom: "0.75rem",
+              padding: "0.5rem",
+              borderRadius: "0.5rem",
+              border: "1px solid #d1d5db",
+              outline: "none",
+            }}
+          />
+
+          <label htmlFor="password" style={{ alignSelf: "flex-start", marginBottom: "0.25rem" }}>
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            style={{
+              width: "100%",
+              marginBottom: "1rem",
+              padding: "0.5rem",
+              borderRadius: "0.5rem",
+              border: "1px solid #d1d5db",
+              outline: "none",
+            }}
+          />
+
+          {error && <p style={{ color: "red", marginBottom: "0.5rem" }}>{error}</p>}
+
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              backgroundColor: "#3b82f6",
+              color: "white",
+              padding: "0.5rem",
+              borderRadius: "0.5rem",
+              cursor: "pointer",
+              transition: "background-color 0.2s",
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#3b82f6")}
+          >
+            Login
+          </button>
+        </form>
+        {/* END FORM */}
 
         <p
           style={{
