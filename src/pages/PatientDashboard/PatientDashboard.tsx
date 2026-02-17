@@ -1,15 +1,30 @@
 import { Navbar } from "@/components";
 import { useAuth } from "@/context";
+import { Outlet } from "react-router-dom";
+import { AppointmentReport } from "./AppointmentReport";
+import { AppointmentCalendar } from "./AppointmentCalendar";
 
 export function PatientDashboard() {
-    const { loggedUser  } = useAuth();
-    const userName = loggedUser ?.name || "User";
+  const { loggedUser } = useAuth();
+  const userName = loggedUser?.name || "User";
 
-    return (
-      <div className="flex flex-col min-h-screen">
-        <nav className="sticky top-0 z-50 bg-white shadow-md flex items-center px-6">
-          <Navbar mode="dashboard" userName={userName} />
-        </nav>
-      </div>
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <nav className="sticky top-0 z-50 bg-white shadow-md flex items-center px-6">
+        <Navbar mode="dashboard" userName={userName} />
+      </nav>
+
+      <main className="flex-1 p-6 mt-12">
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex-1">
+            <AppointmentReport />
+          </div>
+          <div className="flex-1">
+            <AppointmentCalendar />
+          </div>
+        </div>
+        <Outlet />
+      </main>
+    </div>
   );
 }
