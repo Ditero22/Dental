@@ -14,7 +14,7 @@ export function PatientDashboard() {
         <Navbar mode="dashboard" userName={userName} />
       </nav>
 
-      <main className="flex-1 p-6 mt-12">
+      <main className="flex-1 p-6 mt-16">
         <div className="flex flex-col md:flex-row gap-6">
           <div className="flex-1">
             <AppointmentReport />
