@@ -1,6 +1,6 @@
 {
+  "homepage": "https://ditero22.github.io/Dental/",
   "name": "frontend",
-  "homepage": "https://ditero22.github.io/Dental",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.20",
