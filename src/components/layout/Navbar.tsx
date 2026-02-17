@@ -123,10 +123,12 @@ export function Navbar({ mode, userName, openLogin }: NavbarProps) {
         {mode === "dashboard" && (
           <div className="flex items-center space-x-4 md:space-x-6">
             <MessageIcon count={99} />
+            <span className="h-6 w-px bg-gray-300"/>
             <Bell className="w-6 h-6 text-gray-600 cursor-pointer" />
             <span className="hidden sm:inline">
               Welcome, <strong>{userName}</strong>!
             </span>
+            <span className="h-6 w-px bg-gray-300"/>
             <div className="relative" ref={userMenuRef}>
               <User
                 className="w-8 h-8 text-gray-600 cursor-pointer rounded-full border border-gray-300 p-1 "
