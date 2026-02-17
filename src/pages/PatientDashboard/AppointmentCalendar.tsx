@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -44,26 +44,21 @@ const appointmentTypes = ["Extraction", "Filling", "Cleaning", "Adjustment", "Ch
 
 const generateTimes = (): string[] => {
   const times: string[] = [];
-
   const addTime = (hour: number, minute: number) => {
     const period = hour >= 12 ? "PM" : "AM";
     const displayHour = hour > 12 ? hour - 12 : hour;
     const mStr = minute.toString().padStart(2, "0");
     times.push(`${displayHour}:${mStr} ${period}`);
   };
-
   for (let i = 8; i <= 11; i++) {
     addTime(i, 0);
     addTime(i, 30);
   }
-
   for (let i = 13; i <= 16; i++) {
     addTime(i, 0);
     addTime(i, 30);
   }
-
   times.push("5:00 PM");
-
   return times;
 };
 
@@ -79,15 +74,15 @@ export function AppointmentCalendar() {
   const [newDoctor, setNewDoctor] = useState("");
   const [calendarHeight, setCalendarHeight] = useState<number>(600);
 
+  const calendarRef = useRef<FullCalendar | null>(null);
   const todayStr = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) setCalendarHeight(400);
+      if (window.innerWidth < 640) setCalendarHeight(450);
       else if (window.innerWidth < 1024) setCalendarHeight(500);
       else setCalendarHeight(600);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -124,7 +119,6 @@ export function AppointmentCalendar() {
 
   const saveNewAppointment = () => {
     if (!selectedDate) return;
-
     const newAppointment: Appointment = {
       id: appointments.length + 1,
       title: `${newType} Appointment`,
@@ -133,8 +127,7 @@ export function AppointmentCalendar() {
       doctor: newDoctor,
       type: newType,
     };
-
-    setAppointments([...appointments, newAppointment]);
+    setAppointments((prev) => [...prev, newAppointment]);
     setShowNewModal(false);
     setSelectedAppointment(newAppointment);
   };
@@ -146,7 +139,11 @@ export function AppointmentCalendar() {
 
   return (
     <div className="flex-1 bg-white shadow-md rounded-lg p-4 h-full">
+      <hr />
+      <h3 className="text-center tracking-[0.4em] my-2 font-semibold">BOOK APPOINTMENT</h3>
+
       <FullCalendar
+        ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         events={calendarEvents}
@@ -156,112 +153,65 @@ export function AppointmentCalendar() {
         height={calendarHeight}
         dayMaxEvents={true}
         eventDisplay="block"
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
         dayCellClassNames={(arg) =>
           arg.isOther
             ? "bg-gray-100 pointer-events-none opacity-50"
             : "bg-white relative"
         }
+        selectMirror={true}
+        unselectAuto={false} // fixes mobile select overlay issue
+        longPressDelay={0} // ensures mobile tap opens modal
       />
 
+      <hr />
+
+      {/* View appointment modal */}
       {selectedAppointment &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 pointer-events-auto">
             <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-              <h3 className="text-xl font-bold mb-2">
-                {selectedAppointment.title}
-              </h3>
+              <h3 className="text-xl font-bold mb-2">{selectedAppointment.title}</h3>
               <p><strong>Date:</strong> {selectedAppointment.date}</p>
               <p><strong>Time:</strong> {selectedAppointment.time}</p>
               <p><strong>Doctor:</strong> {selectedAppointment.doctor}</p>
               <p><strong>Type:</strong> {selectedAppointment.type}</p>
-
-              <button
-                onClick={closeModal}
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Close
-              </button>
+              <button onClick={closeModal} className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Close</button>
             </div>
           </div>,
           document.body
         )}
 
+      {/* New appointment modal */}
       {showNewModal && selectedDate &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 pointer-events-auto">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96 sm:w-80">
               <h3 className="text-xl font-bold mb-4">New Appointment</h3>
-
               <div className="mb-2">
                 <label className="font-semibold">Date</label>
-                <input
-                  type="text"
-                  value={selectedDate}
-                  readOnly
-                  className="w-full border p-2 rounded bg-gray-100"
-                />
+                <input type="text" value={selectedDate} readOnly className="w-full border p-2 rounded bg-gray-100" />
               </div>
-
               <div className="mb-2">
                 <label className="font-semibold">Type</label>
-                <select
-                  className="w-full border p-2 rounded"
-                  value={newType}
-                  onChange={(e) => setNewType(e.target.value)}
-                >
-                  {appointmentTypes.map((type) => (
-                    <option key={type}>{type}</option>
-                  ))}
+                <select className="w-full border p-2 rounded" value={newType} onChange={(e) => setNewType(e.target.value)}>
+                  {appointmentTypes.map((type) => <option key={type}>{type}</option>)}
                 </select>
               </div>
-
               <div className="mb-2">
                 <label className="font-semibold">Time</label>
-                <select
-                  className="w-full border p-2 rounded"
-                  value={newTime}
-                  onChange={(e) => setNewTime(e.target.value)}
-                >
-                  {allowedTimes.map((time) => (
-                    <option key={time}>{time}</option>
-                  ))}
+                <select className="w-full border p-2 rounded" value={newTime} onChange={(e) => setNewTime(e.target.value)}>
+                  {allowedTimes.map((time) => <option key={time}>{time}</option>)}
                 </select>
               </div>
-
               <div className="mb-2">
                 <label className="font-semibold">Doctor</label>
-                <select
-                  className="w-full border p-2 rounded"
-                  value={newDoctor}
-                  onChange={(e) => setNewDoctor(e.target.value)}
-                >
-                  {doctors
-                    .filter((d) => d.availableDates.includes(selectedDate))
-                    .map((d) => (
-                      <option key={d.name}>{d.name}</option>
-                    ))}
+                <select className="w-full border p-2 rounded" value={newDoctor} onChange={(e) => setNewDoctor(e.target.value)}>
+                  {doctors.filter((d) => d.availableDates.includes(selectedDate)).map((d) => <option key={d.name}>{d.name}</option>)}
                 </select>
               </div>
-
               <div className="flex justify-end gap-2 mt-4">
-                <button
-                  onClick={closeModal}
-                  className="px-4 py-2 bg-gray-400 text-white rounded"
-                >
-                  Cancel
-                </button>
-
-                <button
-                  onClick={saveNewAppointment}
-                  className="px-4 py-2 bg-blue-600 text-white rounded"
-                >
-                  Save
-                </button>
+                <button onClick={closeModal} className="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
+                <button onClick={saveNewAppointment} className="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
               </div>
             </div>
           </div>,
@@ -269,41 +219,18 @@ export function AppointmentCalendar() {
         )}
 
       <style>{`
-        .fc-daygrid-day-frame {
-          position: relative;
-          min-height: 95px;
-        }
+        .fc-daygrid-day-frame { position: relative; min-height: 95px; }
+        .fc-daygrid-day-top { position: relative; z-index: 2; }
+        .fc-daygrid-event-harness { position: static !important; }
+        .appointment-event { position: absolute !important; bottom: 3px; left: 3px; right: 3px; background: #44628a; border-radius: 4px; font-size: 11px; padding: 2px; text-align: center; }
 
-        .fc-daygrid-day-top {
-          position: relative;
-          z-index: 2;
-        }
-
-        .fc-daygrid-event-harness {
-          position: static !important;
-        }
-
-        .appointment-event {
-          position: absolute !important;
-          bottom: 3px;
-          left: 3px;
-          right: 3px;
-          background: #E2E8F0;
-          border-radius: 4px;
-          font-size: 11px;
-          padding: 2px;
-          text-align: center;
-        }
+        .fc .fc-button { background-color: #89afeb; color: white; border: none; border-radius: 4px; padding: 0.25rem 0.75rem; margin: 0 0.25rem; font-size: 0.875rem; }
+        .fc .fc-button:hover { background-color: #7a93ca; }
 
         @media (max-width: 640px) {
-          .fc .fc-toolbar-title {
-            font-size: 0.875rem;
-          }
-
-          .fc .fc-button {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-          }
+          .fc .fc-toolbar-title { font-size: 1rem !important; }
+          .fc .fc-button { font-size: 0.65rem !important; padding: 0.2rem 0.5rem !important; }
+          .fc-daygrid-day-number { font-size: 0.75rem !important; }
         }
       `}</style>
     </div>
