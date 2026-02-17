@@ -18,7 +18,5 @@ export function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
     // Role not allowed
     return <Navigate to="/" replace />;
   }
-
-  // For nested routes, render <Outlet />
   return <Outlet />;
 }
