@@ -1,18 +1,5 @@
 import { Navbar } from "@/components";
 import { useAuth } from "@/context";
-<<<<<<< HEAD
-
-export function PatientDashboard() {
-    const { loggedUser  } = useAuth();
-    const userName = loggedUser ?.name || "User";
-
-    return (
-      <div className="flex flex-col min-h-screen">
-        <nav className="sticky top-0 z-50 bg-white shadow-md flex items-center px-6">
-          <Navbar mode="dashboard" userName={userName} />
-        </nav>
-      </div>
-=======
 import { Outlet } from "react-router-dom";
 import { AppointmentReport } from "./AppointmentReport";
 import { AppointmentCalendar } from "./AppointmentCalendar";
@@ -39,6 +26,5 @@ export function PatientDashboard() {
         <Outlet />
       </main>
     </div>
->>>>>>> Diether
   );
 }

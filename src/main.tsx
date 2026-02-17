@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -8,16 +7,6 @@ import { ProtectedRoute } from './config'
 import { PatientDashboard } from './pages'
 import { Profile } from './pages/PatientDashboard'
 
-=======
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import './index.css';
-import App from './App.tsx';
-import { ProtectedRoute } from './config';
-import { PatientDashboard } from './pages';
-import { Profile } from './pages/PatientDashboard';
->>>>>>> Diether
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
