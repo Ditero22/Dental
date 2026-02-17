@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './index.css'
 import App from './App.tsx'
 import { ProtectedRoute } from './config'
-import { PatientDashboard  } from './pages'
+import { PatientDashboard } from './pages'
 import { Profile } from './pages/PatientDashboard'
 
 
