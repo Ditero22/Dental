@@ -1,7 +1,7 @@
 import { Navbar } from "@/components";
 import { useAuth } from "@/context";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, User, Calendar, Stethoscope, Clock } from "lucide-react";
 
 export function Profile() {
   const { loggedUser } = useAuth();
@@ -10,24 +10,78 @@ export function Profile() {
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-gray-100">
+      {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white shadow-md w-full">
         <Navbar mode="dashboard" userName={userName} />
       </nav>
-      <div className="relative flex flex-col items-center pt-24 px-4 w-full h-full">
+      <div className="flex flex-col items-center pt-24 px-4 w-full">
         <button
           onClick={() => navigate("/patient-dashboard")}
-          className="absolute top-20 left-6 flex items-center justify-center w-12 h-12 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
+          className="self-start mb-6 flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
         >
           <ArrowLeft className="w-5 h-5" />
+          <span>Back to Dashboard</span>
         </button>
-        <div className="flex flex-col items-center w-full max-w-4xl">
-          <h1 className="text-4xl font-semibold mb-4 text-center">My Profile</h1>
-          <p className="text-gray-600 mb-6 text-center">
-            Here you can view and edit your profile information.
-          </p>
-          <div className="w-full bg-white rounded-xl shadow p-6">
-            <p className="mb-2"><strong>Name:</strong> {userName}</p>
-            <p className="mb-2"><strong>Email:</strong> {loggedUser?.email || "user@example.com"}</p>
+        <h1 className="text-3xl font-semibold mb-6">My Profile</h1>
+        <div className="w-full max-w-4xl bg-white rounded-2xl shadow-md p-10 flex flex-col items-center">
+          <div className="relative">
+            <img
+              src="https://randomuser.me/api/portraits/men/44.jpg"
+              alt="Profile"
+              className="w-28 h-28 rounded-lg object-cover"
+            />
+          </div>
+          <h2 className="mt-4 text-xl font-semibold text-gray-800">
+            {userName}
+          </h2>
+          <div className="flex flex-wrap justify-center gap-12 mt-8">
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <User className="text-blue-500 w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Male</p>
+                <p className="text-xs text-gray-400">Gender</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <Clock className="text-blue-500 w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-700">18</p>
+                <p className="text-xs text-gray-400">Age</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <Stethoscope className="text-blue-500 w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-700">Dr. Juan Dela Cruz</p>
+                <p className="text-xs text-gray-400">Consulting Doctor</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap justify-center gap-16 mt-10">
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <Clock className="text-blue-500 w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-400">Recent Visit</p>
+                <p className="text-sm text-blue-600">10/12/2025</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <Calendar className="text-blue-500 w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-400">Upcoming Visit</p>
+                <p className="text-sm text-blue-600">10/20/2126</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
