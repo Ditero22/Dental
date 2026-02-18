@@ -25,7 +25,6 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
 
     if (user) {
       setError("");
-
       // Role-based navigation
       switch (user.role) {
         case "Admin":

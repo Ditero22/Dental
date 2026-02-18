@@ -101,10 +101,8 @@ export function AppointmentCalendar() {
     if (found) setSelectedAppointment(found);
   };
 
-  const handleDateSelect = (selectInfo: any) => {
-    const dateStr = selectInfo.startStr.split("T")[0];
+  const openNewAppointmentModal = (dateStr: string) => {
     if (dateStr < todayStr) return;
-
     setSelectedDate(dateStr);
     setNewType(appointmentTypes[0]);
     setNewTime(allowedTimes[0]);
@@ -147,25 +145,17 @@ export function AppointmentCalendar() {
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         events={calendarEvents}
-        selectable={true}
-        select={handleDateSelect}
-        eventClick={handleEventClick}
         height={calendarHeight}
         dayMaxEvents={true}
         eventDisplay="block"
+        eventClick={handleEventClick}
         dayCellClassNames={(arg) =>
-          arg.isOther
-            ? "bg-gray-100 pointer-events-none opacity-50"
-            : "bg-white relative"
+          arg.isOther ? "bg-gray-100 pointer-events-none opacity-50" : "bg-white relative"
         }
-        selectMirror={true}
-        unselectAuto={false} // fixes mobile select overlay issue
-        longPressDelay={0} // ensures mobile tap opens modal
+        dateClick={(info) => openNewAppointmentModal(info.dateStr)} // fast click on mobile
       />
 
       <hr />
-
-      {/* View appointment modal */}
       {selectedAppointment &&
         createPortal(
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 pointer-events-auto">
@@ -180,8 +170,6 @@ export function AppointmentCalendar() {
           </div>,
           document.body
         )}
-
-      {/* New appointment modal */}
       {showNewModal && selectedDate &&
         createPortal(
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 pointer-events-auto">
@@ -219,14 +207,34 @@ export function AppointmentCalendar() {
         )}
 
       <style>{`
-        .fc-daygrid-day-frame { position: relative; min-height: 95px; }
-        .fc-daygrid-day-top { position: relative; z-index: 2; }
-        .fc-daygrid-event-harness { position: static !important; }
-        .appointment-event { position: absolute !important; bottom: 3px; left: 3px; right: 3px; background: #44628a; border-radius: 4px; font-size: 11px; padding: 2px; text-align: center; }
-
+        .fc-daygrid-day-frame {
+        position: relative;
+        min-height: 95px;
+        justify-content: space-between;
+        padding: 2px;
+      }
+      .fc-daygrid-day-top {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        z-index: 2;
+        font-size: 0.75rem; /* adjust if needed */
+      }
+      /* Appointment event stays at the bottom */
+      .appointment-event {
+        position: absolute !important;
+        top: 30px;
+        left: 3px;
+        right: 3px;
+        background: #44628a;
+        color: white;
+        border-radius: 4px;
+        font-size: 11px;
+        padding: 1px;
+        text-align: center;
+      }
         .fc .fc-button { background-color: #89afeb; color: white; border: none; border-radius: 4px; padding: 0.25rem 0.75rem; margin: 0 0.25rem; font-size: 0.875rem; }
         .fc .fc-button:hover { background-color: #7a93ca; }
-
         @media (max-width: 640px) {
           .fc .fc-toolbar-title { font-size: 1rem !important; }
           .fc .fc-button { font-size: 0.65rem !important; padding: 0.2rem 0.5rem !important; }
