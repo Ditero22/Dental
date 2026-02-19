@@ -81,8 +81,6 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
         <p style={{ color: "#6b7280", textAlign: "center", marginBottom: "1rem" }}>
           Welcome back! Sign in to continue
         </p>
-
-        {/* START FORM */}
         <form
           style={{ width: "100%", display: "flex", flexDirection: "column" }}
           onSubmit={(e) => {

@@ -237,8 +237,6 @@ export function AppointmentCalendar() {
 
   /* MOBILE VIEW */
   @media (max-width: 640px) {
-
-    /* Reduce toolbar size */
     .fc .fc-toolbar-title {
       font-size: 1rem !important;
     }
