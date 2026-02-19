@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { createPortal } from "react-dom";
 
@@ -17,12 +18,10 @@ const generateDateRange = (start: string, end: string) => {
   const dates: string[] = [];
   const current = new Date(start);
   const last = new Date(end);
-
   while (current <= last) {
     dates.push(current.toISOString().split("T")[0]);
     current.setDate(current.getDate() + 1);
   }
-
   return dates;
 };
 
@@ -66,51 +65,42 @@ const allowedTimes = generateTimes();
 
 export function AppointmentCalendar() {
   const [appointments, setAppointments] = useState<Appointment[]>(initialAppointments);
+  const [currentEvents, setCurrentEvents] = useState<any[]>([]);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [showNewModal, setShowNewModal] = useState(false);
   const [newType, setNewType] = useState(appointmentTypes[0]);
   const [newTime, setNewTime] = useState(allowedTimes[0]);
   const [newDoctor, setNewDoctor] = useState("");
-  const [calendarHeight, setCalendarHeight] = useState<number>(600);
+  const [weekendsVisible, setWeekendsVisible] = useState(true);
 
   const calendarRef = useRef<FullCalendar | null>(null);
   const todayStr = new Date().toISOString().split("T")[0];
-
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 640) setCalendarHeight(450);
-      else if (window.innerWidth < 1024) setCalendarHeight(500);
-      else setCalendarHeight(600);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const calendarEvents = appointments.map((a) => ({
-    id: a.id.toString(),
-    title: a.type,
-    start: a.date,
-    allDay: true,
-    classNames: ["appointment-event"],
-  }));
+    setCurrentEvents(
+      appointments.map(a => ({
+        id: a.id.toString(),
+        title: a.type,
+        start: a.date,
+        allDay: true,
+        classNames: ["appointment-event"],
+      }))
+    );
+  }, [appointments]);
 
   const handleEventClick = (clickInfo: any) => {
-    const found = appointments.find((a) => a.id.toString() === clickInfo.event.id);
+    const found = appointments.find(a => a.id.toString() === clickInfo.event.id);
     if (found) setSelectedAppointment(found);
   };
+
+  const handleWeekendsToggle = () => setWeekendsVisible(prev => !prev);
 
   const openNewAppointmentModal = (dateStr: string) => {
     if (dateStr < todayStr) return;
     setSelectedDate(dateStr);
     setNewType(appointmentTypes[0]);
     setNewTime(allowedTimes[0]);
-
-    const availableDoctors = doctors.filter((d) =>
-      d.availableDates.includes(dateStr)
-    );
-
+    const availableDoctors = doctors.filter(d => d.availableDates.includes(dateStr));
     setNewDoctor(availableDoctors.length ? availableDoctors[0].name : "");
     setShowNewModal(true);
   };
@@ -125,7 +115,7 @@ export function AppointmentCalendar() {
       doctor: newDoctor,
       type: newType,
     };
-    setAppointments((prev) => [...prev, newAppointment]);
+    setAppointments(prev => [...prev, newAppointment]);
     setShowNewModal(false);
     setSelectedAppointment(newAppointment);
   };
@@ -137,25 +127,50 @@ export function AppointmentCalendar() {
 
   return (
     <div className="flex-1 bg-white shadow-md rounded-lg p-4 h-full">
-      <hr />
-      <h3 className="text-center tracking-[0.4em] my-2 font-semibold">BOOK APPOINTMENT</h3>
+
+      <div className="mb-4 flex items-center justify-between">
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={weekendsVisible} onChange={handleWeekendsToggle} />
+          Show Weekends
+        </label>
+      </div>
 
       <FullCalendar
         ref={calendarRef}
-        plugins={[dayGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={calendarEvents}
-        height={calendarHeight}
+        events={currentEvents}
+        weekends={weekendsVisible}
+        height={600}
         dayMaxEvents={true}
         eventDisplay="block"
         eventClick={handleEventClick}
-        dayCellClassNames={(arg) =>
-          arg.isOther ? "bg-gray-100 pointer-events-none opacity-50" : "bg-white relative"
-        }
-        dateClick={(info) => openNewAppointmentModal(info.dateStr)} // fast click on mobile
+        dateClick={(info) => openNewAppointmentModal(info.dateStr)}
+        headerToolbar={{
+          left: "prev,next",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
+        }}
+        buttonText={{
+          today: "Today",
+          month: "M",
+          week: "W",
+          day: "D",
+        }}
       />
 
       <hr />
+      <div className="mt-4">
+        <h2 className="font-semibold text-lg mb-2">All Appointments ({currentEvents.length})</h2>
+        <ul className="space-y-1 text-sm">
+          {currentEvents.map(event => (
+            <li key={event.id} className="flex gap-2">
+              <b>{new Date(event.start).toLocaleDateString()}</b>
+              <span>{event.title}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
       {selectedAppointment &&
         createPortal(
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 pointer-events-auto">
@@ -182,19 +197,19 @@ export function AppointmentCalendar() {
               <div className="mb-2">
                 <label className="font-semibold">Type</label>
                 <select className="w-full border p-2 rounded" value={newType} onChange={(e) => setNewType(e.target.value)}>
-                  {appointmentTypes.map((type) => <option key={type}>{type}</option>)}
+                  {appointmentTypes.map(type => <option key={type}>{type}</option>)}
                 </select>
               </div>
               <div className="mb-2">
                 <label className="font-semibold">Time</label>
                 <select className="w-full border p-2 rounded" value={newTime} onChange={(e) => setNewTime(e.target.value)}>
-                  {allowedTimes.map((time) => <option key={time}>{time}</option>)}
+                  {allowedTimes.map(time => <option key={time}>{time}</option>)}
                 </select>
               </div>
               <div className="mb-2">
                 <label className="font-semibold">Doctor</label>
                 <select className="w-full border p-2 rounded" value={newDoctor} onChange={(e) => setNewDoctor(e.target.value)}>
-                  {doctors.filter((d) => d.availableDates.includes(selectedDate)).map((d) => <option key={d.name}>{d.name}</option>)}
+                  {doctors.filter(d => d.availableDates.includes(selectedDate)).map(d => <option key={d.name}>{d.name}</option>)}
                 </select>
               </div>
               <div className="flex justify-end gap-2 mt-4">
@@ -207,40 +222,56 @@ export function AppointmentCalendar() {
         )}
 
       <style>{`
-        .fc-daygrid-day-frame {
-        position: relative;
-        min-height: 95px;
-        justify-content: space-between;
-        padding: 2px;
-      }
-      .fc-daygrid-day-top {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-        z-index: 2;
-        font-size: 0.75rem; /* adjust if needed */
-      }
-      /* Appointment event stays at the bottom */
-      .appointment-event {
-        position: absolute !important;
-        top: 30px;
-        left: 3px;
-        right: 3px;
-        background: #44628a;
-        color: white;
-        border-radius: 4px;
-        font-size: 11px;
-        padding: 1px;
-        text-align: center;
-      }
-        .fc .fc-button { background-color: #89afeb; color: white; border: none; border-radius: 4px; padding: 0.25rem 0.75rem; margin: 0 0.25rem; font-size: 0.875rem; }
-        .fc .fc-button:hover { background-color: #7a93ca; }
-        @media (max-width: 640px) {
-          .fc .fc-toolbar-title { font-size: 1rem !important; }
-          .fc .fc-button { font-size: 0.65rem !important; padding: 0.2rem 0.5rem !important; }
-          .fc-daygrid-day-number { font-size: 0.75rem !important; }
-        }
-      `}</style>
+  .appointment-event {
+    position: absolute !important;
+    top: 18px;
+    left: 2px;
+    right: 2px;
+    background: #44628a;
+    color: white;
+    border-radius: 4px;
+    font-size: 11px;
+    padding: 1px;
+    text-align: center;
+  }
+
+  /* MOBILE VIEW */
+  @media (max-width: 640px) {
+
+    /* Reduce toolbar size */
+    .fc .fc-toolbar-title {
+      font-size: 1rem !important;
+    }
+
+    .fc .fc-button {
+      font-size: 0.6rem !important;
+      padding: 0.15rem 0.35rem !important;
+    }
+
+    /* Reduce day number size */
+    .fc-daygrid-day-number {
+      font-size: 0.7rem !important;
+      padding: 2px !important;
+    }
+
+    .fc .fc-daygrid-day-frame {
+      min-height: 55px !important;
+      padding: 2px !important;
+    }
+
+    /* Reduce row height */
+    .fc .fc-daygrid-body-natural .fc-daygrid-day-events {
+      margin-top: 1px !important;
+    }
+
+    /* Reduce event font */
+    .fc-event {
+      font-size: 0.6rem !important;
+      padding: 0 !important;
+    }
+
+  }
+`}</style>
     </div>
   );
 }
