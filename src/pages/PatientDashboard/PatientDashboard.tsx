@@ -2,7 +2,9 @@ import { Navbar } from "@/components";
 import { useAuth } from "@/context";
 import { Outlet } from "react-router-dom";
 import { AppointmentRecord } from "./AppointmentRecord";
-import { AppointmentCalendar } from "./AppointmentCalendar";
+import { Calendar } from "./AppointmentCalendarT";
+
+
 
 export function PatientDashboard() {
   const { loggedUser } = useAuth();
@@ -19,9 +21,12 @@ export function PatientDashboard() {
           <div className="flex-1">
             <AppointmentRecord />
           </div>
-          <div className="flex-1">
-            <AppointmentCalendar />
+          <div className="flex-2">
+            <div className="bg-white rounded-xl shadow p-4">
+              <Calendar />
+            </div>
           </div>
+
         </div> 
         <Outlet />
       </main>
