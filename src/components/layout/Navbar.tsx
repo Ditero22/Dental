@@ -108,16 +108,14 @@ export function Navbar({ mode, userName, openLogin }: NavbarProps) {
             {!loggedUser && openLogin ? (
               <div className="relative" ref={userMenuRef}>
                 <button
-                      onClick={() => {
-                        openLogin();
-                        setIsUserMenuOpen(false);
-                      }}
-                      className="w-full text-left px-6 py-3 text-gray-700 text-base hover:bg-gray-100 rounded-xl transition"
-                    >
-                      Login
-                    </button>
-
-                
+                  onClick={() => {
+                    openLogin();
+                    setIsUserMenuOpen(false);
+                  }}
+                  className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-sm hover:bg-blue-700 hover:shadow-md transition-all duration-200"
+                >
+                  Login
+                </button>
               </div>
             ) : loggedUser ? (
               <div className="relative" ref={userMenuRef}>
@@ -221,8 +219,11 @@ export function Navbar({ mode, userName, openLogin }: NavbarProps) {
               <Link to="/appointment" className="block text-lg" onClick={() => setIsDrawerOpen(false)}>Appointment</Link>
               {!loggedUser && openLogin && (
                 <button
-                  onClick={() => { openLogin(); setIsDrawerOpen(false); }}
-                  className="w-full text-left px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition"
+                  onClick={() => {
+                    openLogin();
+                    setIsUserMenuOpen(false);
+                  }}
+                  className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-sm hover:bg-blue-700 hover:shadow-md transition-all duration-200"
                 >
                   Login
                 </button>
