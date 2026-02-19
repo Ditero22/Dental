@@ -4,8 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './index.css'
 import App from './App.tsx'
 import { ProtectedRoute } from './config'
-import { PatientDashboard } from './pages'
-import { Profile } from './pages/PatientDashboard'
+import { PatientDashboard, Profile, Messages } from './pages'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -20,6 +19,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         >
           <Route index element={<PatientDashboard />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="messages/:userId" element={<Messages />} />
+          
         </Route>
       </Routes>
     </BrowserRouter>

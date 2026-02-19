@@ -1,10 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { LoginModal, ForgotPassword } from "./modal";
 import { ModalImg } from "@/assets";
 import { Bell, User } from "lucide-react";
 import { useAuth } from "@/context";
 import { MessageIcon } from "@/assets";
+import { MessageDropdown } from "../MessageDropdown";
+import { conversations } from "@/types";
+
+
 
 type NavbarProps = {
   mode: "landing" | "dashboard";
@@ -13,17 +17,35 @@ type NavbarProps = {
 };
 
 export function Navbar({ mode, userName, openLogin }: NavbarProps) {
+  const location = useLocation();
   const { loggedUser, logout } = useAuth();
-   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isForgotOpen, setIsForgotOpen] = useState(false);
+  const isOnMessagesPage = location.pathname.startsWith("/patient-dashboard/messages");
   const [currentDateTime, setCurrentDateTime] = useState({
     date: "",
     time: "",
   });
   const navigate = useNavigate();
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
+  const messageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        messageRef.current &&
+        !messageRef.current.contains(event.target as Node)
+      ) {
+        setIsMessageOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (mode === "dashboard") {
@@ -94,33 +116,85 @@ export function Navbar({ mode, userName, openLogin }: NavbarProps) {
           )}
         </div>
         <div className="flex items-center space-x-4">
-        {mode === "landing" && (
-          <div className="hidden md:flex items-center space-x-8 ml-auto">
-            <Link to="/" className="hover:text-blue-600 transition">
-              Home
-            </Link>
-            <Link to="/service" className="hover:text-blue-600 transition">
-              Service
-            </Link>
-            <Link to="/appointment" className="hover:text-blue-600 transition">
-              Appointment
-            </Link>
-            {!loggedUser && openLogin ? (
-              <div className="relative" ref={userMenuRef}>
-                <button
+          {mode === "landing" && (
+            <div className="hidden md:flex items-center space-x-8 ml-auto">
+              <Link to="/" className="hover:text-blue-600 transition">
+                Home
+              </Link>
+              <Link to="/service" className="hover:text-blue-600 transition">
+                Service
+              </Link>
+              <Link to="/appointment" className="hover:text-blue-600 transition">
+                Appointment
+              </Link>
+              {!loggedUser && openLogin ? (
+                <div className="relative" ref={userMenuRef}>
+                  <button
+                    onClick={() => {
+                      openLogin();
+                      setIsUserMenuOpen(false);
+                    }}
+                    className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-sm hover:bg-blue-700 hover:shadow-md transition-all duration-200"
+                  >
+                    Login
+                  </button>
+                </div>
+              ) : loggedUser ? (
+                <div className="relative" ref={userMenuRef}>
+                  <User
+                    className="w-8 h-8 text-gray-600 cursor-pointer rounded-full border border-gray-300 p-1 ml-[30px] mr-[25px]"
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  />
+
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-2xl z-50">
+                      <Link
+                        to="/patient-dashboard/profile"
+                        className="block px-6 py-3 text-gray-700 text-base hover:bg-gray-100 rounded-t-xl transition"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        Profile
+                      </Link>
+                      <div className="border-t border-gray-200 mx-4"></div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-6 py-3 text-red-600 text-base hover:bg-red-50 rounded-b-xl transition"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : null}
+            </div>
+          )}
+          {mode === "dashboard" && (
+            <div className="flex items-center space-x-4 md:space-x-6">
+              <div className="relative" ref={messageRef}>
+                <div
                   onClick={() => {
-                    openLogin();
-                    setIsUserMenuOpen(false);
+                    if (!isOnMessagesPage) setIsMessageOpen(!isMessageOpen);
                   }}
-                  className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-sm hover:bg-blue-700 hover:shadow-md transition-all duration-200"
+                  className={`cursor-pointer ${isOnMessagesPage ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
-                  Login
-                </button>
+                  <MessageIcon count={conversations.length} />
+                </div>
+
+                {!isOnMessagesPage && isMessageOpen && (
+                  <MessageDropdown
+                    conversations={conversations}
+                    onClose={() => setIsMessageOpen(false)}
+                  />
+                )}
               </div>
-            ) : loggedUser ? (
+              <Bell className="w-6 h-6 text-gray-600 cursor-pointer" />
+              <span className="hidden sm:inline">
+                Welcome, <strong>{userName}</strong>!
+              </span>
+
               <div className="relative" ref={userMenuRef}>
                 <User
-                  className="w-8 h-8 text-gray-600 cursor-pointer rounded-full border border-gray-300 p-1 ml-[30px] mr-[25px]"
+                  className="w-8 h-8 text-gray-600 cursor-pointer rounded-full border border-gray-300 p-1"
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 />
 
@@ -143,73 +217,33 @@ export function Navbar({ mode, userName, openLogin }: NavbarProps) {
                   </div>
                 )}
               </div>
-            ) : null}
-          </div>
-        )}
-        {mode === "dashboard" && (
-          <div className="flex items-center space-x-4 md:space-x-6">
-            <MessageIcon count={99} />
-            <Bell className="w-6 h-6 text-gray-600 cursor-pointer" />
-            <span className="hidden sm:inline">
-              Welcome, <strong>{userName}</strong>!
-            </span>
-
-            <div className="relative" ref={userMenuRef}>
-              <User
-                className="w-8 h-8 text-gray-600 cursor-pointer rounded-full border border-gray-300 p-1"
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              />
-
-              {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-2xl z-50">
-                  <Link
-                    to="/patient-dashboard/profile"
-                    className="block px-6 py-3 text-gray-700 text-base hover:bg-gray-100 rounded-t-xl transition"
-                    onClick={() => setIsUserMenuOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                  <div className="border-t border-gray-200 mx-4"></div>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-6 py-3 text-red-600 text-base hover:bg-red-50 rounded-b-xl transition"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
             </div>
-          </div>
-        )}
-         <button
+          )}
+          <button
             className="md:hidden flex flex-col justify-between w-6 h-6 ml-2 relative z-50"
             onClick={() => setIsDrawerOpen(!isDrawerOpen)}
           >
             <span
-              className={`block h-0.5 w-full bg-black transform transition duration-300 ease-in-out ${
-                isDrawerOpen ? "rotate-45 translate-y-2" : ""
-              }`}
+              className={`block h-0.5 w-full bg-black transform transition duration-300 ease-in-out ${isDrawerOpen ? "rotate-45 translate-y-2" : ""
+                }`}
             />
             <span
-              className={`block h-0.5 w-full bg-black transition-opacity duration-300 ease-in-out ${
-                isDrawerOpen ? "opacity-0" : "opacity-100"
-              }`}
+              className={`block h-0.5 w-full bg-black transition-opacity duration-300 ease-in-out ${isDrawerOpen ? "opacity-0" : "opacity-100"
+                }`}
             />
             <span
-              className={`block h-0.5 w-full bg-black transform transition duration-300 ease-in-out ${
-                isDrawerOpen ? "-rotate-45 -translate-y-2" : ""
-              }`}
+              className={`block h-0.5 w-full bg-black transform transition duration-300 ease-in-out ${isDrawerOpen ? "-rotate-45 -translate-y-2" : ""
+                }`}
             />
           </button>
-          </div>
+        </div>
       </div>
-       <div
-        className={`fixed top-0 right-0 h-full w-2/3 bg-white shadow-xl z-40 transform transition-transform duration-300 ${
-          isDrawerOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+      <div
+        className={`fixed top-0 right-0 h-full w-2/3 bg-white shadow-xl z-40 transform transition-transform duration-300 ${isDrawerOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="flex justify-end p-4">
-         
+
         </div>
         <div className="flex flex-col space-y-4 px-6">
           {mode === "landing" && (
@@ -250,7 +284,7 @@ export function Navbar({ mode, userName, openLogin }: NavbarProps) {
         </div>
       </div>
 
-      
+
       <>
         <LoginModal
           isOpen={isLoginOpen}
