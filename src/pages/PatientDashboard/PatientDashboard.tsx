@@ -16,10 +16,11 @@ export function PatientDashboard() {
 
       <main className="flex-1 p-6 mt-15">
         <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex-1">
+          <div className="hidden md:block flex-2">
             <AppointmentRecord />
           </div>
-          <div className="flex-1">
+          <div className="h-px md:h-auto md:w-px bg-gray-300 my-6 md:my-0 md:mx-sm" />
+          <div className="flex-3">
             <AppointmentCalendar />
           </div>
         </div> 

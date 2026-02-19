@@ -1,27 +1,17 @@
 import { Navbar } from "@/components";
 import { useAuth } from "@/context";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, User, Calendar, Stethoscope, Clock } from "lucide-react";
+import { User, Calendar, Stethoscope, Clock } from "lucide-react";
 
 export function Profile() {
   const { loggedUser } = useAuth();
   const userName = loggedUser?.name || "User";
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-gray-100">
-      {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white shadow-md w-full">
         <Navbar mode="dashboard" userName={userName} />
       </nav>
       <div className="flex flex-col items-center pt-24 px-4 w-full">
-        <button
-          onClick={() => navigate("/patient-dashboard")}
-          className="self-start mb-6 flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span>Back to Dashboard</span>
-        </button>
         <h1 className="text-3xl font-semibold mb-6">My Profile</h1>
         <div className="w-full max-w-4xl bg-white rounded-2xl shadow-md p-10 flex flex-col items-center">
           <div className="relative">

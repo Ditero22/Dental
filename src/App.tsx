@@ -21,11 +21,10 @@ export default function App() {
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
         onForgotPassword={() => {
-          setIsLoginOpen(false); // close login modal
-          setIsForgotOpen(true); // open forgot password modal
+          setIsLoginOpen(false);
+          setIsForgotOpen(true);
         }}
         onLoginSuccess={(user) => {
-          // redirect based on role
           switch (user.role) {
             case "Admin":
               navigate("/admin-dashboard");
@@ -42,8 +41,6 @@ export default function App() {
           setIsLoginOpen(false);
         }}
       />
-
-      {/* Forgot Password Modal */}
       <ForgotPassword
         isOpen={isForgotOpen}
         onClose={() => setIsForgotOpen(false)}

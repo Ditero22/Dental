@@ -15,17 +15,16 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useAuth(); // only need login function
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   if (!isOpen) return null;
 
   const handleLogin = () => {
-    const user: User | null = login(identifier, password); // login returns user or null
+    const user: User | null = login(identifier, password);
 
     if (user) {
       setError("");
-      // Role-based navigation
       switch (user.role) {
         case "Admin":
           navigate("/admin-dashboard");

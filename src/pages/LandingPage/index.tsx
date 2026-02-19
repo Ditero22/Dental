@@ -193,7 +193,6 @@ export function LandingPage({ openLogin }: HeroProps){
               Our Services
             </h2>
           </div>
-
           <h2 className="text-2xl md:text-2xl font-semibold text-gray-800 mb-4">
             Quality Dental Care We Provide
           </h2>
