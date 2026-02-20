@@ -5,12 +5,14 @@ import { User } from "lucide-react";
 type UserDropdownProps = {
   onLogout: () => void;
   profilePath: string;
+  settingsPath?: string;
   iconClassName?: string;
 };
 
 export default function UserDropdown({
   onLogout,
   profilePath,
+  settingsPath = "/settings",
   iconClassName = "",
 }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,17 +20,13 @@ export default function UserDropdown({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -37,7 +35,6 @@ export default function UserDropdown({
         className={`w-8 h-8 text-gray-600 cursor-pointer rounded-full border border-gray-300 p-1 ${iconClassName}`}
         onClick={() => setIsOpen(!isOpen)}
       />
-
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-2xl z-50">
           <Link
@@ -47,9 +44,14 @@ export default function UserDropdown({
           >
             Profile
           </Link>
-
+          <Link
+            to={settingsPath}
+            className="block px-6 py-3 text-gray-700 text-base hover:bg-gray-100 transition"
+            onClick={() => setIsOpen(false)}
+          >
+            Settings
+          </Link>
           <div className="border-t border-gray-200 mx-4"></div>
-
           <button
             onClick={() => {
               setIsOpen(false);

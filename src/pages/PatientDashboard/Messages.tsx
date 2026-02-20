@@ -43,16 +43,18 @@ export function Messages() {
       read: true,
     };
 
-    const updatedConversations = conversations.map(c =>
-      c.id === selectedConversation.id
-        ? {
-            ...c,
-            messages: [...c.messages, newMessage],
-            lastMessage: newMessage.text,
-            lastTime: newMessage.time,
-          }
-        : c
-    ).sort((a, b) => new Date(b.lastTime).getTime() - new Date(a.lastTime).getTime());
+    const updatedConversations = conversations
+      .map(c =>
+        c.id === selectedConversation.id
+          ? {
+              ...c,
+              messages: [...c.messages, newMessage],
+              lastMessage: newMessage.text,
+              lastTime: newMessage.time,
+            }
+          : c
+      )
+      .sort((a, b) => new Date(b.lastTime).getTime() - new Date(a.lastTime).getTime());
 
     setConversations(updatedConversations);
     setNewMessageText("");
@@ -67,8 +69,8 @@ export function Messages() {
     <div className="flex flex-col h-screen bg-gray-100">
       <Navbar mode="dashboard" userName={userName} />
       <div className="flex flex-1 mt-20 mb-4 mx-4 gap-4">
-        <div className="w-1/4 bg-white rounded-xl shadow-md border overflow-y-auto">
-          <h2 className="p-4 font-semibold text-lg border-b">Users</h2>
+        <div className="w-1/4 bg-white rounded-xl shadow-lg overflow-y-auto">
+          <h2 className="p-4 font-semibold text-lg border-b">Message</h2>
           {conversations.map(conv => (
             <div
               key={conv.id}
@@ -85,8 +87,7 @@ export function Messages() {
             </div>
           ))}
         </div>
-
-        <div className="w-3/4 flex flex-col bg-white rounded-xl shadow-md border">
+        <div className="w-3/4 flex flex-col bg-white rounded-xl shadow-lg">
           <div className="flex-1 p-4 overflow-y-auto space-y-2">
             {selectedConversation ? (
               [...selectedConversation.messages]
@@ -97,7 +98,7 @@ export function Messages() {
                     className={`flex ${msg.sender === "You" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`px-4 py-2 rounded-lg max-w-xs break-words ${
+                      className={`px-4 py-2 rounded-lg max-w-xs break-words shadow ${
                         msg.sender === "You"
                           ? "bg-blue-600 text-white"
                           : "bg-gray-200 text-gray-800"
@@ -118,10 +119,11 @@ export function Messages() {
             <div ref={chatEndRef} />
           </div>
 
-          <div className="p-4 border-t flex items-center gap-2 bg-gray-50">
+          {/* Input Box */}
+          <div className="p-4 flex items-center gap-2 bg-gray-50 rounded-b-xl">
             <input
               type="text"
-              className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+              className="flex-1 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
               placeholder="Type a message..."
               value={newMessageText}
               onChange={e => setNewMessageText(e.target.value)}
@@ -129,7 +131,7 @@ export function Messages() {
             />
             <button
               onClick={handleSendMessage}
-              className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow"
             >
               <Send className="w-5 h-5" />
             </button>

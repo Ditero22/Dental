@@ -4,16 +4,18 @@ import { LoginModal, ForgotPassword } from "../modal";
 import { ModalImg, MessageIcon } from "@/assets";
 import { Bell } from "lucide-react";
 import { useAuth } from "@/context";
+import { cn } from '@/lib';
 import { MessageDropdown, UserDropdown, NotifDropdown } from "../ui";
 import { conversations, notifications } from "@/types";
 
 type NavbarProps = {
+  className?: string;
   mode: "landing" | "dashboard";
   userName?: string;
   openLogin?: () => void;
 };
 
-export default function Navbar({ mode, userName, openLogin }: NavbarProps) {
+export default function Navbar({ className, mode, userName, openLogin }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { loggedUser, logout } = useAuth();
@@ -75,7 +77,7 @@ export default function Navbar({ mode, userName, openLogin }: NavbarProps) {
   };
 
   return (
-    <nav className="w-full bg-white shadow-md fixed top-0 left-0 z-50">
+    <nav className={cn('w-full bg-white shadow-md fixed top-0 left-0 z-50', className)}>
       <div className="max-w-8xl mx-auto px-4 h-14 md:h-14 lg:h-16 flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <Link
@@ -114,6 +116,7 @@ export default function Navbar({ mode, userName, openLogin }: NavbarProps) {
                 <UserDropdown
                   onLogout={handleLogout}
                   profilePath="/patient-dashboard/profile"
+                  settingsPath="/patient-dashboard/settings"
                 />
               ) : null}
             </div>
@@ -192,7 +195,8 @@ export default function Navbar({ mode, userName, openLogin }: NavbarProps) {
           )}
           {mode === "dashboard" && (
             <>
-              <Link to="/patient-dashboard/profile" onClick={() => setIsDrawerOpen(false)}>Profile</Link>
+              <Link to="/patient-dashboard/profile" onClick={() => setIsDrawerOpen(false)} className="block px-4 py-3 hover:bg-gray-100 rounded-lg transition">Profile</Link>
+              <Link to="/patient-dashboard/settings" onClick={() => setIsDrawerOpen(false)} className="block px-4 py-3 hover:bg-gray-100 rounded-lg transition"></Link>
               <button onClick={handleLogout} className="text-red-600">Logout</button>
             </>
           )}
