@@ -1,1 +1,1 @@
-export * from './MessageDropdown';
+export * from './dropdown';

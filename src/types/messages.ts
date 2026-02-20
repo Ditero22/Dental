@@ -1,8 +1,8 @@
 export type Message = {
   id: number;
-  sender: string; // who sent the message
+  sender: string;
   text: string;
-  time: string; // exact ISO timestamp
+  time: string;
 };
 
 export type Conversation = {
