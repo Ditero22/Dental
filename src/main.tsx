@@ -12,7 +12,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-
         <Route
           path="/patient-dashboard"
           element={<ProtectedRoute allowedRoles={["Patient"]} />}

@@ -93,7 +93,7 @@ export function AppointmentRecord() {
       <div className="flex flex-col gap-4 overflow-y-auto pr-2 max-h-[80vh] md:max-h-[80vh] scroll-smooth">
         {sortedRecords.map((record) => {
           const { month, day } = formatDate(record.date);
-
+          
           return (
             <div
               key={record.id}
