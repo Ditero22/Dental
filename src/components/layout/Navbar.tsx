@@ -163,6 +163,7 @@ export default function Navbar({ className, mode, userName, openLogin }: NavbarP
               <UserDropdown
                 onLogout={handleLogout}
                 profilePath="/patient-dashboard/profile"
+                settingsPath="/patient-dashboard/settings"
                 iconClassName="ml-[10px]"
               />
             </div>

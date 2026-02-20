@@ -5,14 +5,14 @@ import { User } from "lucide-react";
 type UserDropdownProps = {
   onLogout: () => void;
   profilePath: string;
-  settingsPath?: string;
+  settingsPath: string;
   iconClassName?: string;
 };
 
 export default function UserDropdown({
   onLogout,
   profilePath,
-  settingsPath = "/settings",
+  settingsPath,
   iconClassName = "",
 }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +49,7 @@ export default function UserDropdown({
             className="block px-6 py-3 text-gray-700 text-base hover:bg-gray-100 transition"
             onClick={() => setIsOpen(false)}
           >
-            Settings
+            Account Settings
           </Link>
           <div className="border-t border-gray-200 mx-4"></div>
           <button

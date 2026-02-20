@@ -23,9 +23,7 @@ export function PatientDashboard() {
           </div>
 
         </div>
-
         <Outlet />
-
       </main>
     </div>
   );
