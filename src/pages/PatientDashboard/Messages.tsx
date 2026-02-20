@@ -40,6 +40,7 @@ export function Messages() {
       sender: "You",
       text: newMessageText,
       time: now.toISOString(),
+      read: true,
     };
 
     const updatedConversations = conversations.map(c =>

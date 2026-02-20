@@ -128,7 +128,12 @@ export default function Navbar({ mode, userName, openLogin }: NavbarProps) {
                   }}
                   className={`cursor-pointer ${isOnMessagesPage ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
-                  <MessageIcon count={conversations.length} />
+                  <MessageIcon 
+                      count={conversations.reduce(
+                        (acc, conv) => acc + conv.messages.filter(msg => !msg.read).length,
+                        0
+                      )} 
+                    />
                 </div>
                 {!isOnMessagesPage && isMessageOpen && (
                   <MessageDropdown conversations={conversations} onClose={() => setIsMessageOpen(false)} />

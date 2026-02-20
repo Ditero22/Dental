@@ -22,7 +22,7 @@ export function NotifDropdown({ notifications, isOpen }: NotifDropdownProps) {
             <div
               key={notif.id}
               className={`px-4 py-3 cursor-pointer hover:bg-gray-100 transition ${
-                !notif.read ? "bg-blue-50" : ""
+                !notif.read ? "bg-yellow-50" : ""
               }`}
             >
               <div className="flex justify-between items-center">
