@@ -10,7 +10,7 @@ export type Conversation = {
   user: string;
   messages: Message[];
   lastMessage: string;
-  lastTime: string; // exact ISO timestamp
+  lastTime: string;
 };
 
 export const conversations: Conversation[] = [

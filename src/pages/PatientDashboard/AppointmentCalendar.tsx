@@ -130,7 +130,7 @@ export function AppointmentCalendar() {
 
       <div className="mb-4 flex items-center justify-between">
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={weekendsVisible} onChange={handleWeekendsToggle} />
+          <input type="checkbox" className="accent-blue-600 w-4 h-4 rounded" checked={weekendsVisible} onChange={handleWeekendsToggle} />
           Show Weekends
         </label>
       </div>
@@ -222,54 +222,44 @@ export function AppointmentCalendar() {
         )}
 
       <style>{`
-  .appointment-event {
-    position: absolute !important;
-    top: 18px;
-    left: 2px;
-    right: 2px;
-    background: #44628a;
-    color: white;
-    border-radius: 4px;
-    font-size: 11px;
-    padding: 1px;
-    text-align: center;
-  }
+        .appointment-event {
+          position: absolute !important;
+          top: 18px;
+          left: 2px;
+          right: 2px;
+          background: #44628a;
+          color: white;
+          border-radius: 4px;
+          font-size: 11px;
+          padding: 1px;
+          text-align: center;
+        }
+        @media (max-width: 640px) {
+          .fc .fc-toolbar-title {
+            font-size: 1rem !important;
+          }
+          .fc .fc-button {
+            font-size: 0.6rem !important;
+            padding: 0.15rem 0.35rem !important;
+          }
+          .fc-daygrid-day-number {
+            font-size: 0.7rem !important;
+            padding: 2px !important;
+          }
+          .fc .fc-daygrid-day-frame {
+            min-height: 55px !important;
+            padding: 2px !important;
+          }
+          .fc .fc-daygrid-body-natural .fc-daygrid-day-events {
+            margin-top: 1px !important;
+          }
+          .fc-event {
+            font-size: 0.6rem !important;
+            padding: 0 !important;
+          }
 
-  /* MOBILE VIEW */
-  @media (max-width: 640px) {
-    .fc .fc-toolbar-title {
-      font-size: 1rem !important;
-    }
-
-    .fc .fc-button {
-      font-size: 0.6rem !important;
-      padding: 0.15rem 0.35rem !important;
-    }
-
-    /* Reduce day number size */
-    .fc-daygrid-day-number {
-      font-size: 0.7rem !important;
-      padding: 2px !important;
-    }
-
-    .fc .fc-daygrid-day-frame {
-      min-height: 55px !important;
-      padding: 2px !important;
-    }
-
-    /* Reduce row height */
-    .fc .fc-daygrid-body-natural .fc-daygrid-day-events {
-      margin-top: 1px !important;
-    }
-
-    /* Reduce event font */
-    .fc-event {
-      font-size: 0.6rem !important;
-      padding: 0 !important;
-    }
-
-  }
-`}</style>
+        }
+      `}</style>
     </div>
   );
 }

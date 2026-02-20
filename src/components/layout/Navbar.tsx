@@ -1,11 +1,11 @@
 import { Link, useNavigate,useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import { LoginModal, ForgotPassword } from "./modal";
+import { LoginModal, ForgotPassword } from "../modal";
 import { ModalImg } from "@/assets";
 import { Bell, User } from "lucide-react";
 import { useAuth } from "@/context";
 import { MessageIcon } from "@/assets";
-import { MessageDropdown } from "../MessageDropdown";
+import { MessageDropdown } from "../ui";
 import { conversations } from "@/types";
 
 
@@ -16,7 +16,7 @@ type NavbarProps = {
   openLogin?: () => void;
 };
 
-export function Navbar({ mode, userName, openLogin }: NavbarProps) {
+export default function Navbar({ mode, userName, openLogin }: NavbarProps) {
   const location = useLocation();
   const { loggedUser, logout } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
