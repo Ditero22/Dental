@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cn } from '@/lib';
 
 type SectionProps = {
   children: ReactNode;
@@ -10,7 +11,7 @@ export function Section({ children, className = "", id }: SectionProps) {
   return (
     <section
       id={id}
-      className={`w-full py-16 px-6 md:px-12 bg-[#f4f4f4] ${className}`}
+      className={cn(`w-full py-16 px-6 md:px-12 bg-[#f4f4f4] ${className}`)}
     >
       <div className="mx-auto">
         {children}
