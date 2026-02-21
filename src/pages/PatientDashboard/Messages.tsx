@@ -118,8 +118,6 @@ export function Messages() {
             )}
             <div ref={chatEndRef} />
           </div>
-
-          {/* Input Box */}
           <div className="p-4 flex items-center gap-2 bg-gray-50 rounded-b-xl">
             <input
               type="text"
