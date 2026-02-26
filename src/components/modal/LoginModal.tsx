@@ -30,10 +30,13 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
           navigate("/admin-dashboard");
           break;
         case "Staff":
-          navigate("/staff-dashboard");
+          navigate("/staff");
           break;
         case "Patient":
           navigate("/patient-dashboard");
+          break;
+        case "Dentist":
+          navigate("/dentist-dashboard");
           break;
         default:
           navigate("/");

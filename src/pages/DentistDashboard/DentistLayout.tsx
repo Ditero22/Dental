@@ -6,16 +6,15 @@ import { Outlet } from "react-router-dom";
 import { LayoutGrid, User, Calendar, CreditCard } from "lucide-react";
 
 const dashboardLinks: SidebarLink[] = [
-  { name: "Dashboard", path: "/staff-dashboard/dashboard", icon: <LayoutGrid className="w-5 h-5" /> },
-  { name: "Patients", path: "/staff-dashboard/patients", icon: <User className="w-5 h-5" /> },
-  { name: "Appointments", path: "/staff-dashboard/appointments", icon: <Calendar className="w-5 h-5" /> },
-  { name: "Billing", path: "/staff-dashboard/billing", icon: <CreditCard className="w-5 h-5" /> },
-  { name: "Inventory", path: "/staff-dashboard/inventory", icon: <CreditCard className="w-5 h-5" /> },
+  { name: "Dashboard", path: "/dentist-dashboard/dashboard", icon: <LayoutGrid className="w-5 h-5" /> },
+  { name: "Patients", path: "/dentist-dashboard/patients", icon: <User className="w-5 h-5" /> },
+  { name: "Appointments", path: "/dentist-dashboard/appointments", icon: <Calendar className="w-5 h-5" /> },
+  { name: "Earnings", path: "/dentist-dashboard/earnings", icon: <CreditCard className="w-5 h-5" /> },
 ];
 
-export default Staff;
+export default Dentist;
 
-export function Staff() {
+export function Dentist() {
   const { loggedUser } = useAuth();
   const userName = loggedUser?.name || "User";
 

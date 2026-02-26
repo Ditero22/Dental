@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/context";
 
-type Role = "Admin" | "Staff" | "Patient";
+type Role = "Admin" | "Staff" | "Patient" | "Dentist";
 
 type ProtectedRouteProps = {
   allowedRoles?: Role[];

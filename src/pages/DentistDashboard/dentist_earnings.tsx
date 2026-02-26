@@ -9,15 +9,15 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { earningsTrend, revenueData, transactions } from './data/staff_earnings';
+import { earningsTrend, revenueData, transactions } from './data/dentist_earnings';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-export const StaffEarnings: React.FC = () => {
+
+export const DentistEarnings: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
 
-  // Pagination logic
   const indexOfLast = currentPage * rowsPerPage;
   const indexOfFirst = indexOfLast - rowsPerPage;
   const currentTransactions = transactions.slice(indexOfFirst, indexOfLast);
@@ -166,3 +166,4 @@ export const StaffEarnings: React.FC = () => {
     </div>
   );
 };
+export default DentistEarnings;

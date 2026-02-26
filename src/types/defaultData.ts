@@ -4,6 +4,7 @@ export const defaultUsers: User[] = [
   { id: 1, name: "Admin", email: "admin@example.com", password: "admin", role: "Admin" },
   { id: 2, name: "Staff", email: "staff@example.com", password: "staff", role: "Staff" },
   { id: 3, name: "John Doe", email: "patient@example.com", password: "patient123", role: "Patient" },
+  { id: 3, name: "Dentist", email: "dentist@example.com", password: "dentist", role: "Dentist" },
 ];
 
 export const defaultPatients: Patient[] = [

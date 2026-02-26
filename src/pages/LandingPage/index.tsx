@@ -74,6 +74,9 @@ export function LandingPage({ openLogin }: HeroProps){
         case "Patient":
           navigate("/patient-dashboard");
           break;
+        case "Dentist":
+          navigate("/dentist-dashboard");
+          break;
         default:
           navigate("/");
       }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { patientsData } from "./data/staff_patients";
+import { patientsData } from "./data/dentist_patients";
 
-export const StaffPatients: React.FC = () => {
+export const DentistPatients: React.FC = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const patientsPerPage = 6;

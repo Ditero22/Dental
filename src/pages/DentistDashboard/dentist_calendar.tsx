@@ -3,13 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { type Appointment, appointments } from "./data/staff_appointment";
+import { type Appointment, appointments } from "./data/dentist_appointment";
 
-type StaffCalendarProps = {
+type DentistCalendarProps = {
   onSelectAppointments: (appointments: Appointment[]) => void; // now takes an array
 };
 
-export function StaffCalendar({ onSelectAppointments }: StaffCalendarProps) {
+export function DentistCalendar({ onSelectAppointments }: DentistCalendarProps) {
   const [currentEvents, setCurrentEvents] = useState<any[]>([]);
   const [weekendsVisible, setWeekendsVisible] = useState(true);
   const calendarRef = useRef<FullCalendar | null>(null);

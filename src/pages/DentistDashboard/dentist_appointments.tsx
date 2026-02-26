@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { StaffCalendar } from "./staff_calendar";
-import { type Appointment } from "./data/staff_appointment";
+import { DentistCalendar } from "./dentist_calendar";
+import { type Appointment } from "./data/dentist_appointment";
 
-export function StaffAppointments() {
+export function DentistAppointments() {
   const [todaysAppointments, setTodaysAppointments] = useState<Appointment[]>([]);
   const todayStr = new Date().toISOString().split("T")[0];
 
@@ -53,7 +53,7 @@ export function StaffAppointments() {
             ))}
         </ul>
       </div>
-      <StaffCalendar onSelectAppointments={handleSelectAppointments} />
+      <DentistCalendar onSelectAppointments={handleSelectAppointments} />
     </div>
   );
 }
