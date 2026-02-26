@@ -77,25 +77,6 @@ export function AppointmentCalendar() {
   const calendarRef = useRef<FullCalendar | null>(null);
   const todayStr = new Date().toISOString().split("T")[0];
   useEffect(() => {
-<<<<<<< HEAD
-    const handleResize = () => {
-      if (window.innerWidth < 640) setCalendarHeight(450);
-      else if (window.innerWidth < 1024) setCalendarHeight(500);
-      else setCalendarHeight(600);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const calendarEvents = appointments.map((a) => ({
-    id: a.id.toString(),
-    title: a.type,
-    start: a.date,
-    allDay: true,
-    classNames: ["appointment-event"],
-  }));
-=======
     setCurrentEvents(
       appointments.map(a => ({
         id: a.id.toString(),
@@ -106,18 +87,14 @@ export function AppointmentCalendar() {
       }))
     );
   }, [appointments]);
->>>>>>> main
 
   const handleEventClick = (clickInfo: any) => {
     const found = appointments.find(a => a.id.toString() === clickInfo.event.id);
     if (found) setSelectedAppointment(found);
   };
 
-<<<<<<< HEAD
-=======
   const handleWeekendsToggle = () => setWeekendsVisible(prev => !prev);
 
->>>>>>> main
   const openNewAppointmentModal = (dateStr: string) => {
     if (dateStr < todayStr) return;
     setSelectedDate(dateStr);
@@ -138,11 +115,7 @@ export function AppointmentCalendar() {
       doctor: newDoctor,
       type: newType,
     };
-<<<<<<< HEAD
-    setAppointments((prev) => [...prev, newAppointment]);
-=======
     setAppointments(prev => [...prev, newAppointment]);
->>>>>>> main
     setShowNewModal(false);
     setSelectedAppointment(newAppointment);
   };
@@ -154,27 +127,6 @@ export function AppointmentCalendar() {
 
   return (
     <div className="flex-1 bg-white shadow-md rounded-lg p-4 h-full">
-<<<<<<< HEAD
-      <hr />
-      <h3 className="text-center tracking-[0.4em] my-2 font-semibold">BOOK APPOINTMENT</h3>
-
-      <FullCalendar
-        ref={calendarRef}
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={calendarEvents}
-        height={calendarHeight}
-        dayMaxEvents={true}
-        eventDisplay="block"
-        eventClick={handleEventClick}
-        dayCellClassNames={(arg) =>
-          arg.isOther ? "bg-gray-100 pointer-events-none opacity-50" : "bg-white relative"
-        }
-        dateClick={(info) => openNewAppointmentModal(info.dateStr)} // fast click on mobile
-      />
-
-      <hr />
-=======
 
       <div className="mb-4 flex items-center justify-between">
         <label className="flex items-center gap-2 text-sm">
@@ -219,7 +171,6 @@ export function AppointmentCalendar() {
           ))}
         </ul>
       </div>
->>>>>>> main
       {selectedAppointment &&
         createPortal(
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 pointer-events-auto">
@@ -246,31 +197,19 @@ export function AppointmentCalendar() {
               <div className="mb-2">
                 <label className="font-semibold">Type</label>
                 <select className="w-full border p-2 rounded" value={newType} onChange={(e) => setNewType(e.target.value)}>
-<<<<<<< HEAD
-                  {appointmentTypes.map((type) => <option key={type}>{type}</option>)}
-=======
                   {appointmentTypes.map(type => <option key={type}>{type}</option>)}
->>>>>>> main
                 </select>
               </div>
               <div className="mb-2">
                 <label className="font-semibold">Time</label>
                 <select className="w-full border p-2 rounded" value={newTime} onChange={(e) => setNewTime(e.target.value)}>
-<<<<<<< HEAD
-                  {allowedTimes.map((time) => <option key={time}>{time}</option>)}
-=======
                   {allowedTimes.map(time => <option key={time}>{time}</option>)}
->>>>>>> main
                 </select>
               </div>
               <div className="mb-2">
                 <label className="font-semibold">Doctor</label>
                 <select className="w-full border p-2 rounded" value={newDoctor} onChange={(e) => setNewDoctor(e.target.value)}>
-<<<<<<< HEAD
-                  {doctors.filter((d) => d.availableDates.includes(selectedDate)).map((d) => <option key={d.name}>{d.name}</option>)}
-=======
                   {doctors.filter(d => d.availableDates.includes(selectedDate)).map(d => <option key={d.name}>{d.name}</option>)}
->>>>>>> main
                 </select>
               </div>
               <div className="flex justify-end gap-2 mt-4">
@@ -283,40 +222,6 @@ export function AppointmentCalendar() {
         )}
 
       <style>{`
-<<<<<<< HEAD
-        .fc-daygrid-day-frame {
-        position: relative;
-        min-height: 95px;
-        justify-content: space-between;
-        padding: 2px;
-      }
-      .fc-daygrid-day-top {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-        z-index: 2;
-        font-size: 0.75rem; /* adjust if needed */
-      }
-      /* Appointment event stays at the bottom */
-      .appointment-event {
-        position: absolute !important;
-        top: 30px;
-        left: 3px;
-        right: 3px;
-        background: #44628a;
-        color: white;
-        border-radius: 4px;
-        font-size: 11px;
-        padding: 1px;
-        text-align: center;
-      }
-        .fc .fc-button { background-color: #89afeb; color: white; border: none; border-radius: 4px; padding: 0.25rem 0.75rem; margin: 0 0.25rem; font-size: 0.875rem; }
-        .fc .fc-button:hover { background-color: #7a93ca; }
-        @media (max-width: 640px) {
-          .fc .fc-toolbar-title { font-size: 1rem !important; }
-          .fc .fc-button { font-size: 0.65rem !important; padding: 0.2rem 0.5rem !important; }
-          .fc-daygrid-day-number { font-size: 0.75rem !important; }
-=======
         .appointment-event {
           position: absolute !important;
           top: 18px;
@@ -353,7 +258,6 @@ export function AppointmentCalendar() {
             padding: 0 !important;
           }
 
->>>>>>> main
         }
       `}</style>
     </div>
