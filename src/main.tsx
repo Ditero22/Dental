@@ -14,6 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        
         <Route
           path="/patient-dashboard"
           element={<ProtectedRoute allowedRoles={["Patient"]} />}
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="settings" element={<PatientSettings />} />
           <Route path="messages/:userId" element={<Messages />} />
         </Route>
+
         <Route
           path="/staff-dashboard"
           element={<ProtectedRoute allowedRoles={["Staff"]} />}
@@ -36,6 +38,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="Earnings" element={<StaffEarnings />} /> */}
           </Route>
         </Route>
+
         <Route
           path="/dentist-dashboard"
           element={<ProtectedRoute allowedRoles={["Dentist"]} />}

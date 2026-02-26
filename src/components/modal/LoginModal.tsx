@@ -11,7 +11,12 @@ type LoginModalProps = {
   onLoginSuccess: (user: User) => void;
 };
 
-export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }: LoginModalProps) {
+export function LoginModal({
+  isOpen,
+  onClose,
+  onForgotPassword,
+  onLoginSuccess,
+}: LoginModalProps) {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,22 +26,24 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
   if (!isOpen) return null;
 
   const handleLogin = () => {
-    const user: User | null = login(identifier, password);
+    const user = login(identifier, password);
 
     if (user) {
       setError("");
+
+      // Redirect based on role
       switch (user.role) {
         case "Admin":
           navigate("/admin-dashboard");
           break;
         case "Staff":
-          navigate("/staff");
-          break;
-        case "Patient":
-          navigate("/patient-dashboard");
+          navigate("/staff-dashboard");
           break;
         case "Dentist":
           navigate("/dentist-dashboard");
+          break;
+        case "Patient":
+          navigate("/patient-dashboard");
           break;
         default:
           navigate("/");
@@ -45,7 +52,7 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
       onLoginSuccess(user);
       onClose();
     } else {
-      setError("Invalid credentials. Please try again.");
+      setError("Invalid email/contact or password. Please try again.");
     }
   };
 
@@ -54,7 +61,7 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
       style={{
         position: "fixed",
         inset: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.50)",
+        backgroundColor: "rgba(0,0,0,0.5)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -69,7 +76,7 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
           width: "24rem",
           padding: "2rem",
           position: "relative",
-          boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -83,19 +90,20 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
         <p style={{ color: "#6b7280", textAlign: "center", marginBottom: "1rem" }}>
           Welcome back! Sign in to continue
         </p>
+
         <form
           style={{ width: "100%", display: "flex", flexDirection: "column" }}
           onSubmit={(e) => {
-            e.preventDefault(); // prevent page reload
+            e.preventDefault();
             handleLogin();
           }}
         >
-          <label htmlFor="email" style={{ alignSelf: "flex-start", marginBottom: "0.25rem" }}>
-            Email
+          <label htmlFor="identifier" style={{ alignSelf: "flex-start", marginBottom: "0.25rem" }}>
+            Email or Contact
           </label>
           <input
             type="text"
-            id="email"
+            id="identifier"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             placeholder="Enter your email or contact"
@@ -147,7 +155,6 @@ export function LoginModal({ isOpen, onClose, onForgotPassword, onLoginSuccess }
             Login
           </button>
         </form>
-        {/* END FORM */}
 
         <p
           style={{
