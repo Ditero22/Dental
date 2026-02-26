@@ -1,6 +1,17 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+export function getRelativeTime(dateString: string) {
+  const now = new Date();
+  const messageDate = new Date(dateString);
+  const diffMs = now.getTime() - messageDate.getTime();
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  const diffMinutes = Math.floor(diffMs / 60000);
+  if (diffMinutes < 1) return "Just now";
+  if (diffMinutes < 60) return `${diffMinutes}m ago`;
+
+  const diffHours = Math.floor(diffMinutes / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 7) return `${diffDays}d ago`;
+
+  return messageDate.toLocaleDateString();
 }

@@ -64,7 +64,10 @@ const records: Record[] = [
     status: "UPCOMING",
   },
 ];
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 const sortedRecords = [...records].sort((a, b) => {
   const dateDiff =
     new Date(b.date).getTime() - new Date(a.date).getTime();
@@ -91,18 +94,28 @@ export function AppointmentRecord() {
       <h2 className="text-lg font-semibold text-gray-600">Records</h2>
 
       <hr className="my-3" />
+<<<<<<< HEAD
 
       {/* Scroll container */}
       <div className="flex flex-col gap-4 overflow-y-auto pr-2 max-h-[60vh] md:max-h-[70vh] scroll-smooth">
         {sortedRecords.map((record) => {
           const { month, day } = formatDate(record.date);
 
+=======
+      <div className="flex flex-col gap-4 overflow-y-auto pr-2 max-h-[80vh] md:max-h-[80vh] scroll-smooth">
+        {sortedRecords.map((record) => {
+          const { month, day } = formatDate(record.date);
+          
+>>>>>>> main
           return (
             <div
               key={record.id}
               className="bg-blue-200/60 rounded-xl shadow-sm flex flex-col sm:flex-row"
             >
+<<<<<<< HEAD
               {/* Date / Tooth Panel */}
+=======
+>>>>>>> main
               <div className="flex-shrink-0 sm:w-20 flex sm:flex-col items-center justify-between sm:justify-center border-b sm:border-b-0 sm:border-r border-white/60 px-4 py-3 sm:py-5">
                 <div className="flex sm:flex-col items-center gap-2 sm:gap-0">
                   <span className="text-xs text-gray-600">
