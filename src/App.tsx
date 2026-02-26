@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar, LoginModal, ForgotPassword } from "@/components";
+import { Navbar, LoginModal, ForgotPassword } from "./components";
 import { LandingPage } from "./pages";
 import { useNavigate } from "react-router-dom";
 
