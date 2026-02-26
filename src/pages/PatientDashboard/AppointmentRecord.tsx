@@ -89,27 +89,15 @@ export function AppointmentRecord() {
     <div className="flex-1 bg-white shadow-md rounded-lg p-4 flex flex-col min-h-0">
       <h2 className="text-lg font-poppins font-semibold">RECORD</h2>
       <hr className="my-3" />
-<<<<<<< HEAD
-       <div className="flex flex-col sm:flex-col md:flex-col lg:flex-col gap-4 
-                      sm:overflow-y-auto md:overflow-y-auto 
-                      overflow-x-auto md:overflow-x-visible 
-                      pr-2 max-h-[0vh] md:max-h-[70vh] scroll-smooth
-                      sm:flex-row sm:gap-4">
-=======
       <div className="flex flex-col gap-4 overflow-y-auto pr-2 max-h-[80vh] md:max-h-[80vh] scroll-smooth">
->>>>>>> 4a3c9df727e7a5bbc6e45ae6b34fb7a318e8fdf2
         {sortedRecords.map((record) => {
           const { month, day } = formatDate(record.date);
           
           return (
             <div
               key={record.id}
-<<<<<<< HEAD
-              className="bg-blue-200/60 rounded-xl shadow-sm flex flex-col sm:flex-row">
-=======
               className="bg-blue-200/60 rounded-xl shadow-sm flex flex-col sm:flex-row"
             >
->>>>>>> 4a3c9df727e7a5bbc6e45ae6b34fb7a318e8fdf2
               <div className="flex-shrink-0 sm:w-20 flex sm:flex-col items-center justify-between sm:justify-center border-b sm:border-b-0 sm:border-r border-white/60 px-4 py-3 sm:py-5">
                 <div className="flex sm:flex-col items-center gap-2 sm:gap-0">
                   <span className="text-xs text-gray-600">
