@@ -14,8 +14,9 @@ type NavbarProps = {
   userName?: string;
   openLogin?: () => void;
 };
+export default Navbar;
 
-export default function Navbar({ className, mode, userName, openLogin }: NavbarProps) {
+export function Navbar({ className, mode, userName, openLogin }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { loggedUser, logout } = useAuth();
