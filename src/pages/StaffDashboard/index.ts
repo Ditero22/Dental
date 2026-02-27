@@ -1,2 +1,6 @@
-export * from './staffLayout'
+export * from './StaffLayout'
 export * from './staff_dashboard'
+export * from './staff_patients'
+export * from './staff_appointment'
+export * from './staff_billing'
+export * from './staff_inventory'

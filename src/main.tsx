@@ -3,16 +3,17 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './index.css'
 import App from './App.tsx'
-import { ProtectedRoute } from './config'
-import { PatientDashboard, Profile, Messages, PatientSettings } from './pages'
+import { ProtectedRoute, ScrollToTop  } from './config'
+import { PatientDashboard, Profile, Messages, PatientSettings,  } from './pages'
 // import { Staff, Dashboard, StaffAppointments, StaffPatients, StaffEarnings} from './pages'
-import { Staff, StaffDashboard } from './pages'
+import { Staff, StaffDashboard, StaffPatients, StaffAppointment,StaffBilling, StaffInventory } from './pages'
 import { Dentist, DentistDashboard, DentistAppointments, DentistPatients, DentistEarnings } from './pages'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
+    <ScrollToTop />
+      <Routes>  
         <Route path="/" element={<App />} />
         
         <Route
@@ -33,9 +34,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route element={<Staff />}>
             <Route index element={<StaffDashboard />} />
             <Route path="Dashboard" element={<StaffDashboard />} />
-            {/* <Route path="Patients" element={<StaffPatients />} />
-            <Route path="Appointments" element={<StaffAppointments />} />
-            <Route path="Earnings" element={<StaffEarnings />} /> */}
+            <Route path="Patients" element={<StaffPatients />} />
+            <Route path="Appointments" element={<StaffAppointment />} />
+            <Route path="Billing" element={< StaffBilling/>} />
+            <Route path="Inventory" element={< StaffInventory/>} />
           </Route>
         </Route>
 
