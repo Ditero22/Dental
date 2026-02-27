@@ -3,7 +3,7 @@ export type Message = {
   sender: string;
   text: string;
   time: string;
-  read: boolean; // new property
+  read: boolean;
 };
 
 export type Conversation = {

@@ -31,26 +31,21 @@ export function LoginModal({
     if (user) {
       setError("");
 
-      // Redirect based on role
-      switch (user.role) {
-        case "Admin":
-          navigate("/admin-dashboard");
-          break;
-        case "Staff":
-          navigate("/staff-dashboard");
-          break;
-        case "Dentist":
-          navigate("/dentist-dashboard");
-          break;
-        case "Patient":
-          navigate("/patient-dashboard");
-          break;
-        default:
-          navigate("/");
-      }
-
-      onLoginSuccess(user);
+      // Close modal first
       onClose();
+
+      // Trigger success callback
+      onLoginSuccess(user);
+
+      // Navigate immediately after modal closes and state updates
+      const roleRoutes: Record<User["role"], string> = {
+        Admin: "/admin-dashboard",
+        Staff: "/staff-dashboard",
+        Dentist: "/dentist-dashboard",
+        Patient: "/patient-dashboard",
+      };
+      const route = roleRoutes[user.role] || "/";
+      navigate(route, { replace: true });
     } else {
       setError("Invalid email/contact or password. Please try again.");
     }

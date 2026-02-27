@@ -217,6 +217,7 @@ export function Navbar({ className, mode, userName, openLogin }: NavbarProps) {
           if (user.role === "Admin") navigate("/admin-dashboard");
           else if (user.role === "Staff") navigate("/staff-dashboard");
           else if (user.role === "Patient") navigate("/patient-dashboard");
+          else if (user.role === "Dentist") navigate("/dentist-dashboard");
           else navigate("/");
         }}
       />
